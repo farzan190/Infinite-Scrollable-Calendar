@@ -1,4 +1,4 @@
-[
+export default [
   {
     "imgUrl": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg",
     "rating": 4.8,

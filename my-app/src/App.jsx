@@ -1,5 +1,3 @@
-// App.jsx
-import "./App.css";
 import {
   startOfMonth,
   endOfMonth,
@@ -9,14 +7,24 @@ import {
   startOfWeek,
   endOfWeek,
   addDays,
+  parse,
 } from "date-fns";
 import { useState, useEffect, useRef } from "react";
+import data from "./assets/data";
 
 export default function App() {
   const [days, setDays] = useState([]);
   const [lastMonthAdded, setLastMonthAdded] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const containerRef = useRef(null);
+
+  // build lookup map once
+  const eventsMap = data.reduce((acc, ev) => {
+    const parsed = parse(ev.date, "dd/MM/yyyy", new Date());
+    const key = parsed.toISOString().split("T")[0]; // "2025-08-28"
+    acc[key] = ev;
+    return acc;
+  }, {});
 
   useEffect(() => {
     const now = new Date();
@@ -36,7 +44,6 @@ export default function App() {
     const el = containerRef.current;
     if (!el) return;
 
-    
     const topVisible = Array.from(el.querySelectorAll(".calendar-day")).find(
       (d) => d.getBoundingClientRect().top >= el.getBoundingClientRect().top
     );
@@ -45,8 +52,7 @@ export default function App() {
       setCurrentMonth(startOfMonth(date));
     }
 
-    
-    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 150) {
       setDays((prevDays) => {
         if (!lastMonthAdded) return prevDays;
 
@@ -71,7 +77,6 @@ export default function App() {
     }
   };
 
-  
   const weeks = [];
   for (let i = 0; i < days.length; i += 7) {
     weeks.push(days.slice(i, i + 7));
@@ -79,11 +84,8 @@ export default function App() {
 
   return (
     <div style={{ height: "600px", display: "flex", flexDirection: "column" }}>
-      
       <div className="static-header">
-        <div className="month-label">
-          {format(currentMonth, "MMMM yyyy")}
-        </div>
+        <div className="month-label">{format(currentMonth, "MMMM yyyy")}</div>
         <div className="weekday-row">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
             <div key={d} className="weekday-cell">
@@ -93,7 +95,6 @@ export default function App() {
         </div>
       </div>
 
-      
       <div
         ref={containerRef}
         onScroll={handleScroll}
@@ -106,6 +107,9 @@ export default function App() {
                 day.getMonth() === currentMonth.getMonth() &&
                 day.getFullYear() === currentMonth.getFullYear();
 
+              const key = day.toISOString().split("T")[0];
+              const event = eventsMap[key];
+
               return (
                 <div
                   key={day.toISOString()}
@@ -114,7 +118,10 @@ export default function App() {
                   }`}
                   data-date={day.toISOString()}
                 >
-                  {format(day, "d")}
+                  <div className="day-number">{format(day, "d")}</div>
+                  {event && (
+                    <img src={event.imgUrl} alt="" className="clrimg" />
+                  )}
                 </div>
               );
             })}

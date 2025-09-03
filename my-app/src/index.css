@@ -1,4 +1,3 @@
-
 .static-header {
   background: #fff;
   position: sticky;
@@ -31,8 +30,10 @@
 }
 
 .calendar-day {
+  display:flex;
+  flex-direction:column;
   min-height: 56px;
-  
+  gap:2px;
   border: 1px solid #eee;
   display: flex;
   justify-content: center;
@@ -51,4 +52,146 @@
 }
 ::-webkit-scrollbar {
   display: none; 
+}
+
+
+
+
+
+
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+body {
+  overflow-y: hidden;
+}
+
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80%;
+  height: 100%;
+}
+
+.card {
+  position: absolute;
+  border-radius:5px;
+  width: 40%;
+  height: 80%;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 12px;
+  font-size: 14px;
+}
+
+.card-content h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.card-content .categories {
+  margin-top: 6px;
+}
+
+.card-content .categories span {
+  display: inline-block;
+  background: #eee;
+  padding: 3px 8px;
+  margin: 2px;
+  font-size: 12px;
+}
+
+.card-content .rating {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.card.active {
+  transform: scale(1) translateX(0);
+  opacity: 1;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.card.left {
+  transform: scale(0.8) translateX(-140px);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.card.right {
+  transform: scale(0.8) translateX(140px);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.card.hidden {
+  opacity: 0;
+  transform: scale(0.5);
+  z-index: 1;
+}
+
+.nav-btn {
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
+.carousel-container {
+  overflow-y: hidden;
+}
+.clrimg{
+
+  width:40%;
+  height:90%;
+  overflow:hidden
+}
+
+
+/* Sunday dates */
+.calendar-week .calendar-day:first-child {
+  background-color: #f0f0f0; /* light grey */
+}
+ .calendar-day {
+  border: 1px solid #ddd;
 }
